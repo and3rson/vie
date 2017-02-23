@@ -13,10 +13,12 @@ A Python library for controlling VIE SHAIR headphones.
 # Create VIE instance
 vie = VIE()
 
-# You can find the device automatically (may be slow):
+# You can find the device automatically (may be slow and inaccurate):
 vie.find_device()
-# OR provide a MAC address manually (faster)
+# OR provide a MAC address manually (faster):
 vie.force_device('FC:A8:9A:80:9D:72')
+# NOTE: You'll likely get *two* "VIE SHAIR" devices detected.
+# You should only use the one that is NOT detected as a headset.
 
 # Connect to the device
 vie.connect()
