@@ -10,6 +10,8 @@ An unofficial Python library for controlling VIE SHAIR headphones.
 # example
 
 ```python
+from vie import VIE
+
 # Create VIE instance
 vie = VIE()
 
