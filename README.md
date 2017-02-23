@@ -1,6 +1,6 @@
 # vie
 
-A Python library for controlling VIE SHAIR headphones.
+An unofficial Python library for controlling VIE SHAIR headphones.
 
 # requirements
 
