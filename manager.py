@@ -105,7 +105,10 @@ class App(gtk.Window):
     def _connect_vie(self):
         def process():
             self.lock_gui()
-            self.vie.connect()
+            bands = self.vie.connect()
+            self.band1.set_value(bands[0])
+            self.band2.set_value(bands[1])
+            self.band3.set_value(bands[2])
             print 'CONNECTED'
             self.unlock_gui()
 #            self.vie.set_led_color(VIE.LEDColor.RED)

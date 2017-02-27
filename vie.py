@@ -1,5 +1,36 @@
 import bluetooth
 from gattlib import GATTRequester
+from threading import Event
+
+
+class Requester(GATTRequester):
+    def __init__(self, *args, **kwargs):
+        super(Requester, self).__init__(*args, **kwargs)
+
+        self.event = Event()
+        self.last_indication_data = None
+
+    def _str_to_hex(self, data):
+        return ':'.join(['%02X' % ord(x) for x in data])
+
+    def on_notification(self, handle, data):
+        print 'Notification on handle {}: {}'.format(
+            handle, self._str_to_hex(data)
+        )
+
+    def on_indication(self, handle, data):
+        if self.event:
+            self.last_indication_data = data
+            self.event.set()
+            self.event = None
+        else:
+            print 'Indication on handle {}: {}'.format(
+                handle, self._str_to_hex(data)
+            )
+
+    def wait_for_indication(self):
+        self.event.wait(timeout=10)
+        return self.last_indication_data
 
 
 class DeviceException(Exception):
@@ -29,7 +60,7 @@ class Device(object):
         self.addr = addr
 
     def connect(self):
-        self.req = GATTRequester(self.addr)
+        self.req = Requester(self.addr)
         self._connected = True
 
     def is_connected(self):
@@ -79,6 +110,12 @@ class VIE(Device):
         FREQ_3_KHZ = '\x07'
         FREQ_6_KHZ = '\x08'
         FREQ_16_KHZ = '\x09'
+
+    def connect(self):
+        super(VIE, self).connect()
+        self.get_req().write_by_handle(VIE.HANDLE, '\xE0\x00')
+        status = self.get_req().wait_for_indication()
+        return map(lambda c: ord(c) - 6, status[9:12])
 
     def set_led_color(self, color):
         """
