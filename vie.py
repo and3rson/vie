@@ -13,6 +13,7 @@ class Device(object):
     def __init__(self):
         self.addr = None
         self.adapter = ''
+        self._connected = False
 
     def find_device(self):
         self.addr = None
@@ -29,6 +30,10 @@ class Device(object):
 
     def connect(self):
         self.req = GATTRequester(self.addr)
+        self._connected = True
+
+    def is_connected(self):
+        return self._connected
 
     def get_req(self):
         return self.req
@@ -93,3 +98,7 @@ class VIE(Device):
         self.get_req().write_by_handle(VIE.HANDLE, '\xE2\x06' + str(
             bytearray(freqs) + bytearray(gains)
         ))
+
+    def read(self):
+#        self.get_req().write_by_handle(VIE.HANDLE, '\xE1\x00')
+        return self.get_req().read_by_handle(VIE.HANDLE)

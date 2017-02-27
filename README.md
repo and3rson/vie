@@ -7,6 +7,10 @@ An unofficial Python library for controlling VIE SHAIR headphones.
 - `pybluez` - for device discovery
 - `gattlib` - for ATT support
 
+# manager app included
+
+![Screenshot](http://i.imgur.com/LZd6p5j.png)
+
 # example
 
 ```python
