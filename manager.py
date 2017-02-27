@@ -30,7 +30,7 @@ class App(gtk.Window):
         self.add(self.layout)
 
         self.bands_box = gtk.HBox()
-        self.bands_box.set_size_request(-1, 128)
+        self.bands_box.set_size_request(-1, 160)
         self.layout.pack_start(self.bands_box, True, True)
 
         self.band1 = self._create_band_slider(self._on_band_change)
@@ -70,7 +70,12 @@ class App(gtk.Window):
     def _create_band_slider(self, on_change):
         band = gtk.VScale(gtk.Adjustment(0, -6, 7, 1, 1, 1))
         band.set_inverted(True)
-        band.connect('value-changed', on_change)
+        def change_value_cb(*args):
+            x, y, mods = self.get_screen().get_root_window().get_pointer()
+            # print bool((gtk.gdk.BUTTON1_MASK | gtk.gdk.BUTTON2_MASK | gtk.gdk.BUTTON3_MASK) & mods)
+            if not bool(mods):
+                on_change(band)
+        band.connect('change-value', change_value_cb)
         for i in xrange(-6, 7):
             band.add_mark(i, gtk.POS_RIGHT, None)
         return band
@@ -141,7 +146,7 @@ class App(gtk.Window):
 
 def main():
     if len(sys.argv) != 2:
-        print 'Usage: ./manager.py <MAC_ADDRESS>'
+        print 'Usage: sudo ./manager.py <MAC_ADDRESS>'
         sys.exit(1)
     app = App()
     app.start()
