@@ -60,7 +60,8 @@ class Device(object):
         self.addr = addr
 
     def connect(self):
-        self.req = Requester(self.addr)
+        self.req = Requester(self.addr, True)
+        # self.req.connect(False)
         self._connected = True
 
     def is_connected(self):
