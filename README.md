@@ -11,6 +11,8 @@ An unofficial Python library for controlling VIE SHAIR headphones.
 
 ![Screenshot](http://i.imgur.com/LZd6p5j.png)
 
+**Note**: you'll likely need to run `manager.py` as root.
+
 # example
 
 ```python
