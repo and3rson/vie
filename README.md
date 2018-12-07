@@ -12,6 +12,7 @@ An unofficial Python library for controlling VIE SHAIR headphones.
 ![Screenshot](http://i.imgur.com/LZd6p5j.png)
 
 **Note**: you'll likely need to run `manager.py` as root.
+**Note**: you'll need to use Python 2 because gattlib seems to be unfriendly with Gtk3...
 
 # example
 
